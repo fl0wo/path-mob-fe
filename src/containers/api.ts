@@ -1,10 +1,12 @@
 import { LoginResponse } from './models/login-response';
 import axios from 'axios';
 import { ProfileResponse } from './models/profile-response';
-import { BusPosition, PositionsResponse } from './models/positions-response';
+import { BusPosition, PositionsResponse, TaxiPosition } from './models/positions-response';
 
 let jwt:any = null;
-const BASEURL = "http://localhost:3001";
+const LOCALURL = "http://localhost:3401";
+const BASEURL = LOCALURL
+// "http://141.94.250.185:3401";
 
 const login = async (email: string, pwd: string) => {
 
@@ -61,6 +63,7 @@ const getBus = async () => {
       .catch(handleError);
 }
 
+
 const getMyKids = async () => {
     if (jwt==null) return null;
 
@@ -109,7 +112,7 @@ function handleError(err: any) {
 
 function header(jwt: String) {
     return {
-        headers: {Authorization: 'Bearer ' + jwt}
+        headers: {}
     };
 }
 

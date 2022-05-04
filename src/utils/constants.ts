@@ -1,5 +1,5 @@
 // APP TEXT
-export const APP_TITLE = 'Family Share';
+export const APP_TITLE = 'Path Mob';
 export const APP_DESCRIPTION = 'React TypeScript Material-UI.';
 export const FOOTER_TEXT = `${new Date().getFullYear()}`;
 // PAGES TITLE

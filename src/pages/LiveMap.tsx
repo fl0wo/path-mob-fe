@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { Map } from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
 // @ts-ignore
-import { BusStopDrawer, toArray } from '../containers/components/busstopdrawer.js';
+import BusStopDrawer, { toArray } from '../containers/components/busstopdrawer.js';
 
 import useWindowDimensions from '../utils/window-dimensions';
 import { getBus } from '../containers/api';
@@ -27,43 +27,48 @@ const LiveMap = (props:any) => {
       props.setBus(r?.data)
     })
 
+  if (!props.busStops || props.busStops.length==0)
+    getBus().then((r)=>{
+      props.setBus(r?.data)
+    })
+
   function min(a:number,b:number){
     return a<b?a:b;
   }
 
   function getBusStops(busStops:any) {
     let center = busStops.length>0?
-      toArray({lat: busStops[0].latitude,long:busStops[0].longitude}) :
-      null
+      toArray({
+        lat: Number.parseFloat(busStops[0].latitude),
+        long:Number.parseFloat(busStops[0].longitude)
+      }) :
+      toArray({lat:46.518977,long:12.008826})
 
     return <Map
       provider={stamenToner}
       defaultCenter={center}
       defaultZoom={18}
-      width={min(800,width-(width*20/100))}
-      height={min(600,height-(height*20/100))}
+      width={min(1080,width-(width*30/100))}
+      height={min(1920,height-(height*30/100))}
     >
       <BusStopDrawer busStoppes={busStops}/>
-    </Map>;  }
+    </Map>;
+  }
 
   return (
     <div>
-
-      <div>
-        width: {width} ~ height: {height}
-      </div>
-
     {
       <div>
         <div>
           <IntervalExample></IntervalExample>
         </div>
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div>
-          {props.number}
+          <Fragment key={'livemap'}>
+            {getBusStops(props.busStops)}
+          </Fragment>
         </div>
-        <Fragment key={'livemap'}>
-          {getBusStops(props.busStops)}
-        </Fragment>
+
       </div>
     }
   </div>

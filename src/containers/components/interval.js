@@ -13,7 +13,6 @@ export const IntervalExample = () => {
     return (
         <div className="App">
             <header className="App-header">
-                {seconds} sec passati dal mount.
             </header>
         </div>
     );
