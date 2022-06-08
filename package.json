@@ -1,17 +1,14 @@
 {
-  "name": "weldev-project-react-mui-ts-bp",
+  "name": "pathmob",
   "version": "2.0.0",
-  "description": "React TypeScript Material-UI boilerplate by Welcome, Developer.",
+  "description": "React TypeScript Material-UI boilerplate",
   "author": {
-    "name": "Dan Castro",
-    "url": "https://www.welcomedeveloper.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/danilocastronz/weldev-project-react-mui-ts-bp",
-    "directory": "weldev-project-react-mui-ts-bp"
+    "name": "Florian Sabani"
   },
   "dependencies": {
+    "@capacitor/android": "3.5.0",
+    "@capacitor/core": "^3.5.0",
+    "@capacitor/ios": "3.5.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
@@ -67,6 +64,7 @@
     ]
   },
   "devDependencies": {
+    "@capacitor/cli": "^3.5.0",
     "@types/react-router-dom": "^5.1.6",
     "@typescript-eslint/parser": "^4.31.2",
     "axios": "^0.24.0",

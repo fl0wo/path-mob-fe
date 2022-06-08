@@ -1,7 +1,7 @@
 import { LoginResponse } from './models/login-response';
 import axios from 'axios';
 import { ProfileResponse } from './models/profile-response';
-import { BusPosition, PositionsResponse, TaxiPosition } from './models/positions-response';
+import { BusPosition, PositionsResponse, SolutionsBus, TaxiPosition } from './models/positions-response';
 
 let jwt:any = null;
 const LOCALURL = "http://localhost:3401";
@@ -63,6 +63,12 @@ const getBus = async () => {
       .catch(handleError);
 }
 
+const getSolutions = async (id1:string,id2:string)=>{
+  return axios.post<SolutionsBus>(BASEURL + "/bus/solution",
+    {id1,id2}
+    ,header(jwt))
+}
+
 
 const getMyKids = async () => {
     if (jwt==null) return null;
@@ -107,7 +113,7 @@ const myEventAdd = async (eventName: string, eventDurationMinutes:string) => {
 }
 
 function handleError(err: any) {
-    return err.response.data;
+    return err;
 }
 
 function header(jwt: String) {
@@ -121,4 +127,4 @@ let identity=(res: any)=>{
   return res
 };
 
-export {register,login, getMyKids, me, myEvent,registerKid, myEventAdd , getBus}
+export {register,login, getMyKids, me, myEvent,registerKid, myEventAdd , getBus,getSolutions}

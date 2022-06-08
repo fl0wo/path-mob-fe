@@ -71,3 +71,44 @@ export interface TaxiPosition {
   cancellation_policies: string;
 }
 
+
+
+  export interface Segment {
+    departureDateTime: Date;
+    arrivalDateTime: Date;
+    departureStationCode: string;
+    arrivalStationCode: string;
+    carrier: string;
+    travelMode: string;
+    line: string;
+    kind: string;
+  }
+
+  export interface Solution {
+    solutionId: string;
+    departureStationCode: string;
+    arrivalStationCode: string;
+    departureDateTime: Date;
+    arrivalDateTime: Date;
+    segments: Segment[];
+  }
+
+  export interface Offer {
+    offerId: string;
+    availability: number;
+    totalPriceInCents: number;
+  }
+
+  export interface Combination {
+    outboundSolutionId: string;
+    inboundSolutionId: string;
+    offers: Offer[];
+  }
+
+  export interface SolutionsBus {
+    currency: string;
+    solutions: Solution[];
+    combinations: Combination[];
+  }
+
+

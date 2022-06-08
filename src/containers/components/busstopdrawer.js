@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setBusStops } from '../../utils/actions';
 import { Point } from 'pigeon-maps';
 import Button from '@mui/material/Button';
-import { getBus } from '../api';
+import { getBus, getSolutions } from '../api';
 
 export function toArray(pos) {
     return [
@@ -32,6 +32,7 @@ function toRad(Value)
   return Value * Math.PI / 180;
 }
 
+
 const BusStopDrawer = ({
                                mapState: {width, height},
                                latLngToPixel,
@@ -45,6 +46,7 @@ const BusStopDrawer = ({
 
   let [a,setA] = useState(null)
   let [b,setB] = useState(null)
+  let [solutions,setSolutions] = useState(null)
 
 
   function getBusStops(bus,allBusStops,stopsToCoordinateDict) {
@@ -194,6 +196,7 @@ const BusStopDrawer = ({
   }
 
   function getSPA(a, b, busStops) {
+    //if(a &&!b &&solutions)setSolutions(null)
     if(!a || !b) return null
     a = {latitude:Number.parseFloat(a[0]),longitude:Number.parseFloat(a[1])}
     b = {latitude:Number.parseFloat(b[0]),longitude:Number.parseFloat(b[1])}
@@ -208,7 +211,34 @@ const BusStopDrawer = ({
     const lineA = getLine(a,busStops[idBestStopFromA])
     const lineB = getLine(b,busStops[idBestStopFromB])
 
+    if(!solutions) {
+      getSolutions(busStops[idBestStopFromA].code, busStops[idBestStopFromB].code)
+        .then((r)=>{
+          console.log('solutions found ->',r.data.solutions)
+          setSolutions(r.data.solutions)
+        })
+    }
     return [lineA,lineB];
+  }
+
+  function busOf(busStops,id) {
+    return busStops.find(b=>b.code===id)
+  }
+
+  function getLinesOfSolution(busStops, solutions) {
+    if(!solutions || solutions.length===0) return []
+    console.log(solutions)
+    const seg = solutions[0].segments
+    let sid = solutions[0].departureStationCode
+    let eid = solutions[0].arrivalStationCode
+    console.log(sid,eid)
+    return seg.map((s)=>{
+      let id = s.departureStationCode;
+      console.log("id => ", id)
+      let line = getLine(busOf(busStops,sid),busOf(busStops,id))
+      sid = id;
+      return line;
+    }).concat(getLine(busOf(busStops,sid),busOf(busStops,eid)))
   }
 
   function getMap() {
@@ -243,8 +273,9 @@ const BusStopDrawer = ({
 
       const spa = getSPA(a,b,busStoppes)
 
-      return busStops.concat([withA,withB,spa])
+      const solLines = getLinesOfSolution(busStoppes,solutions)
 
+      return busStops.concat([withA,withB,spa,solLines])
   }
 
   return (

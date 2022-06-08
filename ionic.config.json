@@ -1,0 +1,7 @@
+{
+  "name": "pathmob",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
